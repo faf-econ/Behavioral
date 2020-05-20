@@ -1,0 +1,66 @@
+---
+output: 
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: true
+    toc: false
+    keep_tex: true
+
+title: "Intertemporal Choice: A review of the Discount Functions and its implications"
+author: 
+- Fernando Agustin Falbo*
+date: "May, 2018"
+abstract: "This work has three main goals. First, review three different discount models: the Exponential Discount Function, The Hyperbolic Discount Function and the Quasi-Hyperbolic Discount Function. The different features of these three models have different implications to deal with anomalies found empirically. Second, show how time inconsistency and decreasing discount rates affect decision making, causing Present Bias and Lack of Self Control. Finally, show how the latter two problems are solved by self mechanisms."
+
+header-includes:
+- \usepackage{floatrow}
+- \floatsetup[figure]{capposition=top}
+- \floatsetup[table]{capposition=top}
+- \usepackage{tikz}
+- \usepackage{pgfplots}
+---
+
+```{r child='0_preset.Rmd'}
+```
+
+# Introduction
+```{r child='1_Introduction.Rmd'}
+```
+
+# Exponential Discount
+
+## The Model 
+```{r child='2.1_The Model.Rmd'}
+```
+
+## Anomalies in Exponential Discount 
+```{r child='2.2_Anomalies in Exponential Discount.Rmd'}
+```
+
+# Hyperbolic Discount 
+```{r child='3_Hyperbolic Discount.Rmd'}
+```
+
+# Quasi-Hyperbolic Discount 
+```{r child='4_Quasi-Hyperbolic Discount.Rmd'}
+```
+
+# Lack of Self-Control and how to deal with it 
+```{r child='5.0_Lack of Self-Control and how to deal with it.Rmd'}
+```
+
+## Internalitites and Self Bargaining 
+```{r child='5.1_Internalitites and Self Bargaining.Rmd'}
+```
+
+## Sophistication
+```{r child='5.2_Sophistication.Rmd'}
+```
+
+# Conclusions
+```{r child='6_Conclusions.Rmd'}
+```
+
+# Bibliography
+```{r child='7_Bibliography.Rmd'}
+```

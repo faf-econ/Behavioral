@@ -1,0 +1,9 @@
+In this paper, I will study three different models to explain inter-temporal decision making and discount of future utilities. The traditional Discount Utility Model is based on an exponential discount function, which is very useful to approach several economics problems. However, exponential function is limited and does not capture anomalies observed empirically. This limitation causes the emergence of other discount functions,
+such as hyperbolic and quasi-hyperbolic, which contemplate problems related to time consistency.
+
+In the first section, the exponential discount function will be addressed. The main advantages of adopting the exponential function will be explained, as well as the empirically observed anomalies that contrasted with the exponential model.
+
+In sections 2 and 3, hyperbolic function and quasi hyperbolic function will be presented respectively. The main proposed forms will be studied and explained to what extent they could solve two of the main anomalies of the exponential function: the decreasing discount rate and inter-temporal inconsistency.
+
+In section 4, one of the most studied problems in Behavioral Economics will be discussed more deeply: present bias and lack of self-control as consequences of hyperbolic discounting. Additionally, two internal mechanisms will be presented to deal with this problem: sophistication and self bargaining. Finally, the conclusions will be presented.
+

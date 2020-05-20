@@ -1,0 +1,107 @@
+Quasi-Hyperbolic Discount Function is useful to deal not only with different discount-rates over time, but also with *preference reversal*. The conceptual distinction with the hyperbolic function is that time period should not be interpreted as a specific date, but as reference to start counting discount factors ^[Note that Rasmusen (2008) considers this feature to all non-exponential functions (which he calls hyperbolic functions). In this work, I followed Cartwright (2011), where time as specific dates is used in exponential and hyperbolic function and time as a delay reference is used in quasi-hyperbolic function.]. In this way, the economic agent is always more impatient for short term gains, since in the following periods the initial discount factors chain starts again and again.
+
+Read (2012) stresses that the two models differ in:
+
+- In the hyperbolic model discount rate decreases with time gradually, while in the quasi-hyperbolic model *"there is a threshold delay which leads to excess discounting, after which there is constant rate discounting thereafter"* (Read, 2012).
+- Hyperbolic discounting implies that the discount rate will be reduced to almost zero in the long run, whereas quasi-hyperbolic discounting assumes a constant discount rate for all delays *"once the initial delay is past, so even a small discount rate can lead even large outcomes to have zero value which entails disregard for the distant future"* (Read, 2012). 
+
+Phelps \& Pollak (1968) proposed the form:
+
+\[
+U = \delta^0 u(c_{0})+ \beta\delta^1 u(c_{1}) + \beta\delta^2 u(c_{2}) + \beta\dots + \beta\delta^\infty u(c_{\infty}) 
+\]
+
+With $0<\beta, \delta <1$
+
+or
+
+\[
+U = u(c_{0})+ \beta \sum_{t=1}^{\infty}\delta^{t} u(c_{t})
+\]
+
+Note that if $\beta=1$, this form is the exponential function. The difference here is that since $0<\beta<1$, utility today is even more valued than utility in the future. In other words, besides the obvious discount function $F(t)=\delta^t$ (which is decreasing in $t$), there is an "additional" discount factor $\beta$, which makes the present utility more valuable. Therefore, $\beta$ reflects the presence of a sort of "myopia".
+ 
+If $\beta$ is close to $0$, then the individual is extremely impatient in the present. $\beta$ can be also interpreted as a measure of *present bias*. Note that the quasi-hyperbolic function contemplates the cases where the agents make a plan and then change it. In the previous example of choosing \$100 today (vs \$110 tomorrow) and \$100 in 30 days (vs \$110 in 31 days), the chain of discount factors faced by the agent will be the same in both cases (today and in 30 days). Therefore, at day 30 the present bias will appear again because the discount factor for the future will be the same than in day 1, so she will choose to get \$100 in that moment instead of wait one more day to get \$110.
+
+Another popular specification for quasi-hyperbolic function is given by Laibson (1997): 
+
+\[ F(t)=\begin{cases} 
+1 & t = 0 \\
+\beta\delta^t & t>0 \\ 
+\end{cases}
+\]
+
+Based on empirical evidence, Laibson (1997) further suggests that $\beta$ should be calibrated in the interval $(0, 2/3 )$ assuming that $\delta$ is close to unit. In Figure \@ref(fig:qh), Laibson quasi-hyperbolic specification simulations are presented with $\beta=0.75$ and $\beta=0.95$ for $\rho=0.95$. Additionally, hyperbolic function and exponential function can be seen to compare the three cases. 
+
+```{r qh, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Quasi-Hyperbolic Discount Functions", message=FALSE, warning=FALSE, out.width='75%'}
+
+qh_1 <- function(t){
+  ifelse(t > 0, 0.5*0.95^t, 1)
+}
+
+qh_2 <- function(t){
+  ifelse(t > 0, 0.75*0.95^t, 1)
+}
+
+qh_3 <- function(t){
+  ifelse(t > 0, 0.95*0.95^t, 1)
+}
+
+h_3 <- function(t){
+  1/(1 + 3*t)^(.75/3)
+}
+
+exp_3 <- function(t){
+  0.95^t
+}
+
+qh <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) +
+  
+  scale_x_continuous(name = "Time",
+                     limits = c(0, 10),
+                     breaks = seq(0, 10, 1),
+                     labels = number_format(1)) +
+  scale_y_continuous(name = "Discounted Value",
+                     limits = c(0.4, 1)) +
+  
+  stat_function(fun = qh_2, aes(linetype = "Quasi-Hiperbolic 1")) +
+  stat_function(fun = qh_3, aes(linetype = "Quasi-Hiperbolic 2")) +
+  stat_function(fun = h_3, aes(linetype = "Hiperbolic")) +
+  stat_function(fun = exp_3, aes(color = "Exponential")) +
+  
+  scale_linetype_discrete(name = "")+
+  scale_color_discrete(name = "")+
+  theme(legend.position = "bottom")
+
+qh
+```
+
+- Quasi-Hyperbolic 1: $\beta = 0.75$, $\delta = 0.95$
+- Quasi-Hyperbolic 2: $\beta = 0.95$, $\delta = 0.95$
+- Hyperbolic: $\alpha = 3$, $\gamma = 1$
+- Exponential: $\delta = 0.95$
+
+The characteristics commented above are shown in Figure \@ref(fig:qh). The quasi-hyperbolic function shows a discount rate decreasing very fast (steeper slope) at the beginning, but after a threshold it is very similar to the exponential function with constant decreasing rate. On the other hand, the discount rate decreases faster at beginning (not so fast as the quasi-hyperbolic function value) and gradually with time for the hyperbolic function.  	
+
+A briefly resume of the three discount models seen above is presented in Table \@ref(tab:dis).
+
+\begin{table}
+	\caption {Discount Models} \label{tab:dis}
+	\centering
+	\begin{tabular}{l c c c c}
+		\hline
+		                  & Exponential                    & Hyperbolic*                         & Quasi-Hyperbolic \\ 
+		\hline
+		Discount Function & $F(t)= \delta^t$               & $F(t, \rho)= \frac{1}{1 + \rho t}$  & $F(t)=\beta \delta^t$ \\ 
+		Discount Rate     & $\rho=\frac{1-\delta}{\delta}$ & $\rho=\frac{1-\delta}{\delta t}$    & $\rho=\frac{1-\delta}{\delta}$ \\ 
+		Time              & Specific Date                  & Specific date                       & Reference/Delay  \\ 
+		Cross-Sectional Inconsistency & X                  & $\surd$                             & $\surd$ \\ 
+		Longitudinal Inconsistency    & X                  & X                                   & $\surd$ \\ 
+		Delay Effect                  & X                  & $\surd$                             & $\surd$ \\ 
+		\hline
+		\begin{minipage}{0.2\textwidth}
+			{\footnotesize * Mazur, 1984}
+		\end{minipage}
+	\end{tabular}
+\end{table}
+

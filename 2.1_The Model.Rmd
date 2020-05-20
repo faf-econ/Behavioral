@@ -1,0 +1,76 @@
+The lifetime individual utility depends on a sequence of present and future consumptions in different periods. According to the traditional discounted utility theory, this could be represented in the following way:
+
+\[
+U = f(c_{o}, c_{1}, c_{2},\dots, c_{\infty})
+\]
+
+Where $U$ is the lifetime utility and $c_{t}$ is consumption at time $t$. More specifically, the consumer's decision problem adopts an utility lifetime which depends on the discounted instantaneous utility at each time $t$.
+
+\[
+U = \delta^0 u(c_{0})+ \delta^1 u(c_{1}) + \delta^2 u(c_{2}) + \dots + \delta^\infty u(c_{\infty})
+\]
+
+or
+
+\[
+U = \sum_{t=0}^{\infty}\delta^t u(c_{t})
+\]
+
+All the instantaneous utilities are preceded by a discount function $F(t) = \delta^t$, where $\delta \epsilon(0,1)$ is the discount factor. The main reason because future payoffs are discounted is that there is a human tendency to value less the future payoffs than the present ones. Risk and uncertainty are also mentioned as reasons for the presence of a discounting factor.
+
+Note that the individual is impatient when $\delta<1$ as $F(t)$ is decreasing, is patient when $\delta>1$ as $F(t)$ is increasing, and is indifferent between present and future consumption when $\delta=1$ as $F(t)$ is constant.
+
+```{r exp, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Exponential Discount Functions", message=FALSE, warning=FALSE, out.width='75%'}
+
+exp_1 <- function(t){
+  0.5^t
+}
+
+exp_2 <- function(t){
+  0.75^t
+}
+
+exp_3 <- function(t){
+  0.95^t
+}
+
+exp <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) +
+  
+  scale_x_continuous(name = "Time",
+                     limits = c(0, 10),
+                     breaks = seq(0, 10, 1),
+                     labels = number_format(1)) +
+  scale_y_continuous(name = "Discounted Value",
+                     limits = c(0, 1)) +
+  
+  stat_function(fun = exp_1, aes(linetype = "0.5")) +
+  stat_function(fun = exp_2, aes(linetype = "0.75")) +
+  stat_function(fun = exp_3, aes(linetype = "0.95")) +
+  
+  scale_linetype_discrete(name = "",
+                       labels = c(quote(delta == 0.5),
+                                  quote(delta == 0.75),
+                                  quote(delta == 0.95)))+
+  theme(legend.position = "bottom")
+
+exp
+
+```
+
+The value of $\delta$ depends on the discount rate $\rho$.
+
+\[
+\delta = \frac{1}{1+\rho}
+\] 
+  
+The parameter $\rho$ represents an individual preference over the future discounting and is constant (does not depend on time). It can be interpreted as the individual 's impatience.
+
+Several exponential discount functions were simulated with different values for $\delta$. The results are presented in Figure \@ref(fig:exp).
+
+The exponential discount function has two main features, for which it has become very popular in economic models. First, it is ``mathematically nice" since it is additive (Burkett, 2006). This allows to find a solution for $\delta$ adding infinite series using geometric successions.
+
+\[
+1 + \delta + \delta^2 + \dots = \sum_{t=0}^{\infty}\delta^t = \frac{1}{1 - \delta}
+\]   
+
+The second feature is that it implies inter-temporal consistency. That means the plans settled in one moment are still attractive at all subsequent moments(Burkett, 2006). In ot her words, preferences do not change over time. Given that the discount factor $\delta$ and the discount rate $\rho$ are time constant, the preferences are consistent over time. Note that this consistency implies the following: if an individual chooses \$110 tomorrow instead of \$100 today, she will also prefer \$110 in day 31 over \$100 in day 30. In addition to this, the consistency given by the exponential function also ensures that in day 30, she will not change her plan. She will still prefer \$110 the next day (day 31) over \$100 the same day. 

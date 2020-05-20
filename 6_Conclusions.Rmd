@@ -1,0 +1,6 @@
+This work showed how the exponential discount function was very useful to build economic models due to its mathematical features and its inter-temporal consistency. However, the empirical evidence shows many anomalies that the exponential function cannot explain. 
+
+The hyperbolic and quasi-hyperbolic functions have the advantage that they can deal with problems of decreasing discount rate and inter-temporal inconsistencies, even though they do not contemplate other important anomalies either.
+
+It was also analyzed how the present bias is originated by the hyperbolic / quasi-hyperbolic discount and how it impacts in the decision making process and in the lack of self control. This causes a great difficulty to understand  and interpret inter-temporal preferences, and also reveals that individuals are systematically not consistent when it comes to stick to a plan.
+Finally, sophistication and self-bargaining were analyzed as mechanisms that can solve, at least partially, the problem of consistency and lack of self-control without the need for superior intervention (paternalism).

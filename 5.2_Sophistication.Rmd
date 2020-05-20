@@ -1,0 +1,39 @@
+In the following paragraphs I will follow the examples of Cartwright (2011) to explain *sophistication*, another internal tool to deal with present bias. Suppose on Friday, Maria must decide when she will do her homework (to be submitted on Monday). If Maria does not have present bias ($\beta = 1$), on Friday the best plan is to do the homework on Saturday, since it has the highest payoff (10.9). On Saturday, doing homework on Saturday is still the best plan, because Maria keep getting the highest payment (in this case 12.1). Something similar happens when Maria has just a little bit of present bias ($\beta = 0.9$). The plan to do homework on Saturday is better on both Friday and Saturday. Therefore Maria does the homework on Saturday and there are no major problems.
+
+However, when Maria has greater present bias ($\beta = 0.8$) the problem becomes more complex. On Friday, Maria plans to do her homework on Saturday because she gets the highest payment (8.7), but on Saturday, the present bias comes into action and higher discount for nearest future makes the payment of doing homework on Monday (9.0) greater than doing it on Saturday (8.7). In this way, a reversion of the preferences is observed.
+
+```{r s1, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Homework: Costs First", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("/home/faf/Dropbox/Git_Projects/Behavioral/soph1.csv") %>%
+  as.data.frame() %>%
+  setNames(c("p", "f1", "s1", "f2", "s2")) %>%
+  mutate(f1 = cell_spec(f1, "latex", color = ifelse(f1 == 10.9, "blue", "black")),
+         s1 = cell_spec(s1, "latex", color = ifelse(s1 == "12.1", "blue", "black")),
+         f2 = cell_spec(f2, "latex", color = ifelse(f2 == 8.7, "blue", "black")),
+         s2 = cell_spec(s2, "latex", color = ifelse(s2 == "9", "blue", "black"))) %>%
+  
+  kableExtra::kable("latex", booktabs = TRUE, caption = "Homework: Costs First", align = c("l", rep("c", 4)),
+                    col.names = c("Plan", "$\\beta = 1$", "$\\gamma = 0.9$","$\\beta= 0.8$", "$\\gamma = 0.9$"), escape = FALSE) %>%
+  kableExtra::add_header_above(c("", "On Friday", "On Saturday", "On Friday", "On Saturday")) 
+```
+
+This problem can have two outcomes. The first is that Maria is a *naive* person and does not know that she has present bias. This is a case of *procrastination* and Maria will do the homework on Monday, that is, modify her plan and delay the homework until last moment. The second case is when Maria is *sophisticated* and she is aware of her present bias. In this way, Maria knows that if she waits until Saturday, she will do the homework on Monday. Therefore, the real options are doing the homework on Monday with a payment of 7.2 or doing the homework on Friday with a payment of 7.4, which will lead her to do the homework on Friday and procrastination is avoided. Results for this example are presented in Table \@ref(tab:s1).
+
+In the previous example, costs come before benefits, but the opposing order could lead to different outcomes. Suppose now that Maria must choose which day go to the cinema theater as in Table \@ref(tab:s2). With no present bias, she will plan to go on Sunday and she will stick to her plan. In case of present bias ($\beta = 0.8$), on Friday she plans to go on Sunday, since she gets the highest payment (6.5). However, on Saturday she prefers to go on Saturday because she has a higher payment than on Sunday. Again, the outcome will depend on whether Maria is naive or sophisticated. If she is naive, she will end up going to the movies on Saturday. If she is sophisticated, she will go on Friday, that is, she will anticipate her future present bias. In the latter case, we can say that Maria will *preproperate*.
+
+```{r s2, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Movies: Benefits First", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("/home/faf/Dropbox/Git_Projects/Behavioral/soph2.csv") %>%
+  as.data.frame() %>%
+  setNames(c("p", "f1", "s1", "f2", "s2")) %>%
+  mutate(f1 = cell_spec(f1, "latex", color = ifelse(f1 == 6.5, "blue", "black")),
+         s1 = cell_spec(s1, "latex", color = ifelse(s1 == "7.2", "blue", "black")),
+         f2 = cell_spec(f2, "latex", color = ifelse(f2 == 5.2, "blue", "black")),
+         s2 = cell_spec(s2, "latex", color = ifelse(s2 == "6", "blue", "black"))) %>%
+  
+  kableExtra::kable("latex", booktabs = TRUE, caption = "Movies: Benefits First", align = c("l", rep("c", 4)),
+                    col.names = c("Plan", "$\\beta = 1$", "$\\gamma = 0.9$","$\\beta= 0.8$", "$\\gamma = 0.9$"), escape = FALSE) %>%
+  kableExtra::add_header_above(c("", "On Friday", "On Saturday", "On Friday", "On Saturday")) 
+```
+
+Finally, there are other mechanisms to deal with present bias, such as *commitment*. In the movies example, a commitment will imply find someway to force the plan. Particularly, if Maria is sophisticated, on Friday she can buy tickets to go to the movies on Sunday.

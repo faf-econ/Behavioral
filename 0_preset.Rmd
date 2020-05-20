@@ -1,0 +1,17 @@
+**Keywords: **Behavioral Economics, Discount Functions, Exponential Discount, Hyperbolic Discount, Quasi-hyperbolic discount, Present Bias, Self Control.
+
+\vspace*{3ex}
+
+\* **New York University**
+
+\pagebreak
+
+```{r settings, message=FALSE, warning=FALSE, include=FALSE}
+
+library(kableExtra)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(magrittr)
+
+```

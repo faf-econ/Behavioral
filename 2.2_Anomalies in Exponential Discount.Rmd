@@ -1,0 +1,33 @@
+Read(2007) states seven anomalies of the Exponential model. I will briefly describe them in the following paragraphs. Since I will present the Hyperbolic and the Quasi-hyperbolic models in the following sections, I will focus on the first two anomalies (related with time inconsistency and decreasing discount rates)^[Other anomalies such as Magnitude Effect and Sign Effect are contemplated by other type of functions. Read (2007) presents a *Value Function*, which deals with these kind of problems]. 
+
+
+- *Time Inconsistency*\
+  - *Cross-sectional* time inconsistency occurs when people have two different preferences for two different periods. The most popular example is when an individual prefers \$100 today than \$110 tomorrow, but prefers \$110 in 31 days than \$100 in 30 days. As Read (2007) stressed, Kirby and Herrnstein (1995) showed that people choose the small sooner prize over the large prize later for the present, but they change their choice when the same question is asked for a delay in time.\
+  - *Longitudinal* time inconsistency refers to changes in plans because preferences for sooner payoffs increase as they become closer in time. Following the previous example, Fredrick, Loewenstein \& O’Donoghue (2002) shows that in $t=0$ the subjects chooses to receive \$110 on day 31 (vs \$100 on day 30), but after the 30 days they are asked again and change their mind. After a specified time delay, they prefer \$100 in day 30 over waiting one day for \$110.\
+
+- *Delay Effect* refers to the existence of decreasing discount rate. Burkett (2006) presents a popular experiment realized by Thaler (1981), where median responses indicated indifference between \$15 today, \$20 in a month, \$50 in a year, and \$100 in ten years. This preferences are in conflict with the exponential discount function, given that they imply different $\delta$ values for different periods. Indifference between \$15 today and \$50 in one year implies that $\delta=0.3$, which implies $\rho=2.3$. On the other hand, indifference between \$15 today and \$20 in a month implies $\delta=0.0317$, or $\rho=30.54$. Therefore, $\delta$ increases in $t$, while $\rho$ decreases in $t$. This means that people are more impatient for immediate payoffs than for future payoffs. The different $\delta$ and $\rho$ values corresponding to the example in Burkett (2006) are presented in Table \@ref(tab:inc).\
+
+\begin{table}
+	\caption {Inter-Temporal Inconsistent Payoffs} \label{tab:inc}
+	\centering
+	\begin{tabular}{c c  c c c} 
+		& Now   & 1 Month & 1 Year  & 10 Years  \\ 
+		\hline 
+		$\delta$ &        & $0.0317$  & $0.3$  & $0.8272$  \\ 
+		$\rho$   &        & $30.57$   & $2.3$  & $0.209$  \\ 
+		Payoff   & \$15   & \$20      & \$50   & \$100  \\ 
+		\hline 
+	\end{tabular} 
+\end{table}
+
+- *Interval Effect* means that the interval between two periods affects the values of $\delta$ and $\rho$. Longer intervals lead to smaller discount rates and larger discount factors.\
+
+- *Direction Effect* refers to the asymmetric preference between delaying and speeding up consumption. Loewenstein (1988) found that *``The value put on a given delay was much greater when the certificate was delayed than when it was expedited."*(Read, 2007).\
+  
+- *Magnitude Effect* means that the discount rate $\rho$ is higher for smaller amounts. The exponential function assumes that the discount rate is independent of the size or magnitude of payoffs, but empirical evidence suggest that it is not the case. Individuals discount larger payoffs at a lower rate compared to smaller payoffs. Read provides several works where magnitude effects were found: Kirby (1997), Shelley (1993), and Green, Myerson and McFadden (1997).\
+  
+- *Sign Effect* refers to lower discount rates for losses than for gains. Although the exponential model assumes that the discount rate is independent of the sign of payoffs, evidence suggests that individuals are more impatient to gain a positive reward than to postpone a loss. Loewenstein (1988) found that people were indifferent to  win \$100 now and \$157 in a year, but they were also indifferent to lose \$100 now and \$133 in the same year, which implied higher rates for positive amounts than for negative amounts.\
+  
+- *Sequence Effect* means that people usually prefer constant or increasing sequences of outcomes than decreasing ones, which is not compatible with the positive rate of time preference in the exponential model. Loewenstein \& Sicherman (1991) showed that most people in their experiment prefer the increasing sequence even though it implied a lower net present value.   
+  
+
