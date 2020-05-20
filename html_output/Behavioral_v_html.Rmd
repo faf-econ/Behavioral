@@ -1,0 +1,496 @@
+---
+title: "Intertemporal Choice: A review of the Discount Functions and its implications"
+author: "Fernando Agustin Falbo"
+date: "May 2018"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+---
+  
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+
+library(knitr)
+library(plyr)
+library(kableExtra)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(magrittr)
+
+```
+
+# Introduction
+
+In this paper, I will study three different models to explain inter-temporal decision making and discount of future utilities. The traditional Discount Utility Model is based on an exponential discount function, which is very useful to approach several economics problems. However, exponential function is limited and does not capture anomalies observed empirically. This limitation causes the emergence of other discount functions,
+such as hyperbolic and quasi-hyperbolic, which contemplate problems related to time consistency.
+
+In the first section, the exponential discount function will be addressed. The main advantages of adopting the exponential function will be explained, as well as the empirically observed anomalies that contrasted with the exponential model.
+
+In sections 2 and 3, hyperbolic function and quasi hyperbolic function will be presented respectively. The main proposed forms will be studied and explained to what extent they could solve two of the main anomalies of the exponential function: the decreasing discount rate and inter-temporal inconsistency.
+
+In section 4, one of the most studied problems in Behavioral Economics will be discussed more deeply: present bias and lack of self-control as consequences of hyperbolic discounting. Additionally, two internal mechanisms will be presented to deal with this problem: sophistication and self bargaining. Finally, the conclusions will be presented.
+
+
+# Exponential Discount
+
+## The Model 
+
+The lifetime individual utility depends on a sequence of present and future consumptions in different periods. According to the traditional discounted utility theory, this could be represented in the following way:
+
+\[
+U = f(c_{o}, c_{1}, c_{2},\dots, c_{\infty})
+\]
+
+Where $U$ is the lifetime utility and $c_{t}$ is consumption at time $t$. More specifically, the consumer's decision problem adopts an utility lifetime which depends on the discounted instantaneous utility at each time $t$.
+
+\[
+U = \delta^0 u(c_{0})+ \delta^1 u(c_{1}) + \delta^2 u(c_{2}) + \dots + \delta^\infty u(c_{\infty})
+\]
+
+or
+
+\[
+U = \sum_{t=0}^{\infty}\delta^t u(c_{t})
+\]
+
+All the instantaneous utilities are preceded by a discount function $F(t) = \delta^t$, where $\delta \epsilon(0,1)$ is the discount factor. The main reason because future payoffs are discounted is that there is a human tendency to value less the future payoffs than the present ones. Risk and uncertainty are also mentioned as reasons for the presence of a discounting factor.
+
+Note that the individual is impatient when $\delta<1$ as $F(t)$ is decreasing, is patient when $\delta>1$ as $F(t)$ is increasing, and is indifferent between present and future consumption when $\delta=1$ as $F(t)$ is constant.
+
+```{r exp, echo=TRUE, error=FALSE, fig.align='center', fig.cap="Exponential Discount Functions", message=FALSE, warning=FALSE, out.width='75%'}
+
+exp_1 <- function(t){
+  0.5^t
+}
+
+exp_2 <- function(t){
+  0.75^t
+}
+
+exp_3 <- function(t){
+  0.95^t
+}
+
+exp <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) +
+  
+  scale_x_continuous(name = "Time",
+                     limits = c(0, 10),
+                     breaks = seq(0, 10, 1),
+                     labels = number_format(1)) +
+  scale_y_continuous(name = "Discounted Value",
+                     limits = c(0, 1)) +
+  
+  stat_function(fun = exp_1, aes(linetype = "0.5")) +
+  stat_function(fun = exp_2, aes(linetype = "0.75")) +
+  stat_function(fun = exp_3, aes(linetype = "0.95")) +
+  
+  scale_linetype_discrete(name = "",
+                       labels = c(quote(delta == 0.5),
+                                  quote(delta == 0.75),
+                                  quote(delta == 0.95)))+
+  theme(legend.position = "bottom")
+
+exp
+
+```
+
+The value of $\delta$ depends on the discount rate $\rho$.
+
+\[
+\delta = \frac{1}{1+\rho}
+\] 
+  
+The parameter $\rho$ represents an individual preference over the future discounting and is constant (does not depend on time). It can be interpreted as the individual 's impatience.
+
+Several exponential discount functions were simulated with different values for $\delta$. The results are presented in Figure \@ref(fig:exp).
+
+The exponential discount function has two main features, for which it has become very popular in economic models. First, it is ``mathematically nice" since it is additive (Burkett, 2006). This allows to find a solution for $\delta$ adding infinite series using geometric successions.
+
+\[
+1 + \delta + \delta^2 + \dots = \sum_{t=0}^{\infty}\delta^t = \frac{1}{1 - \delta}
+\]   
+
+The second feature is that it implies inter-temporal consistency. That means the plans settled in one moment are still attractive at all subsequent moments(Burkett, 2006). In ot her words, preferences do not change over time. Given that the discount factor $\delta$ and the discount rate $\rho$ are time constant, the preferences are consistent over time. Note that this consistency implies the following: if an individual chooses \$110 tomorrow instead of \$100 today, she will also prefer \$110 in day 31 over \$100 in day 30. In addition to this, the consistency given by the exponential function also ensures that in day 30, she will not change her plan. She will still prefer \$110 the next day (day 31) over \$100 the same day. 
+
+## Anomalies in Exponential Discount 
+
+Read(2007) states seven anomalies of the Exponential model. I will briefly describe them in the following paragraphs. Since I will present the Hyperbolic and the Quasi-hyperbolic models in the following sections, I will focus on the first two anomalies (related with time inconsistency and decreasing discount rates)^[Other anomalies such as Magnitude Effect and Sign Effect are contemplated by other type of functions. Read (2007) presents a *Value Function*, which deals with these kind of problems]. 
+
+
+- *Time Inconsistency*\
+  - *Cross-sectional* time inconsistency occurs when people have two different preferences for two different periods. The most popular example is when an individual prefers \$100 today than \$110 tomorrow, but prefers \$110 in 31 days than \$100 in 30 days. As Read (2007) stressed, Kirby and Herrnstein (1995) showed that people choose the small sooner prize over the large prize later for the present, but they change their choice when the same question is asked for a delay in time.\
+  - *Longitudinal* time inconsistency refers to changes in plans because preferences for sooner payoffs increase as they become closer in time. Following the previous example, Fredrick, Loewenstein \& O’Donoghue (2002) shows that in $t=0$ the subjects chooses to receive \$110 on day 31 (vs \$100 on day 30), but after the 30 days they are asked again and change their mind. After a specified time delay, they prefer \$100 in day 30 over waiting one day for \$110.\
+
+- *Delay Effect* refers to the existence of decreasing discount rate. Burkett (2006) presents a popular experiment realized by Thaler (1981), where median responses indicated indifference between \$15 today, \$20 in a month, \$50 in a year, and \$100 in ten years. This preferences are in conflict with the exponential discount function, given that they imply different $\delta$ values for different periods. Indifference between \$15 today and \$50 in one year implies that $\delta=0.3$, which implies $\rho=2.3$. On the other hand, indifference between \$15 today and \$20 in a month implies $\delta=0.0317$, or $\rho=30.54$. Therefore, $\delta$ increases in $t$, while $\rho$ decreases in $t$. This means that people are more impatient for immediate payoffs than for future payoffs. The different $\delta$ and $\rho$ values corresponding to the example in Burkett (2006) are presented in Table \@ref(tab:inc).\
+
+```{r inc, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Inter-Temporal Inconsistent Payoffs", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("./tables/an1.csv") %>%
+  as.data.frame() %>%
+  setNames(c("", "Now", "Month", "1 Year", "10 Years")) %>%
+
+  kable(caption = "Inter-Temporal Inconsistent Payoffs")%>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+- *Interval Effect* means that the interval between two periods affects the values of $\delta$ and $\rho$. Longer intervals lead to smaller discount rates and larger discount factors.\
+
+- *Direction Effect* refers to the asymmetric preference between delaying and speeding up consumption. Loewenstein (1988) found that *``The value put on a given delay was much greater when the certificate was delayed than when it was expedited."*(Read, 2007).\
+  
+- *Magnitude Effect* means that the discount rate $\rho$ is higher for smaller amounts. The exponential function assumes that the discount rate is independent of the size or magnitude of payoffs, but empirical evidence suggest that it is not the case. Individuals discount larger payoffs at a lower rate compared to smaller payoffs. Read provides several works where magnitude effects were found: Kirby (1997), Shelley (1993), and Green, Myerson and McFadden (1997).\
+  
+- *Sign Effect* refers to lower discount rates for losses than for gains. Although the exponential model assumes that the discount rate is independent of the sign of payoffs, evidence suggests that individuals are more impatient to gain a positive reward than to postpone a loss. Loewenstein (1988) found that people were indifferent to  win \$100 now and \$157 in a year, but they were also indifferent to lose \$100 now and \$133 in the same year, which implied higher rates for positive amounts than for negative amounts.\
+  
+- *Sequence Effect* means that people usually prefer constant or increasing sequences of outcomes than decreasing ones, which is not compatible with the positive rate of time preference in the exponential model. Loewenstein \& Sicherman (1991) showed that most people in their experiment prefer the increasing sequence even though it implied a lower net present value.   
+
+# Hyperbolic Discount 
+
+Impatience decreasing is not captured by the exponential discount function, so the Hyperbolic discount function must be used to be compatible with a decreasing discount rate $\rho$.  A simple functional form for the discount function $F(t)$ was suggested by Ainslie (1975):
+    
+\[
+F(t)= \frac{1}{t}
+\]
+
+As time passes, the value of $F(t)$ falls. This can be shown with
+  
+\[
+\frac{\partial F(t)}{\partial t}= \frac{-1}{t^2} <0
+\]
+  
+And
+  
+\[
+\frac{\partial^2 F(t)}{\partial t^2}= \frac{2}{t^3} > 0
+\] 
+  
+Which is consistent with decreasing impatience.
+
+Another form was proposed by Mazur (1984):
+    
+\[
+F(t, \rho)= \frac{1}{1 + \rho t}
+\]
+  
+This specification is better in the sense that it states a relationship between the discount function and the discount rate. It can be shown that when as both $t$ and $\rho$ increase, the function value decreases  	
+  
+\[
+\frac{\partial F(t, \rho)}{\partial \rho}= \frac{-t}{(1 + \rho t)^2} < 0 
+\]
+
+And 
+
+\[
+\frac{\partial F(t, \rho)}{\partial t} = \frac{-\rho}{(1 + \rho t)^2} < 0 
+\]
+  
+With
+
+\[
+t, \rho > 0
+\]  
+
+Additionally, it is possible to determine more specifically the decreasing impatient in time:
+    
+\[
+\frac{d \rho}{d t} = -\frac{F_{t}(t, \rho)}{F_{\rho}(t, \rho)} =  -\frac{t}{\rho} < 0
+\]
+  
+With
+
+\[
+t, \rho > 0
+\]  
+
+
+which is also consistent with decreasing impatience.
+
+Ultimately, Loewenstein \& Prelec (1992) present the general case:
+    
+\[
+F(t)= \frac{1}{(1 + \alpha t)^{\gamma/\alpha}} 
+\] 
+
+With
+
+\[
+\gamma, \alpha > 0
+\]
+
+Where $\alpha$ measures the distance to the exponential discounting and $\gamma$ represents a time preference parameter. This specification is considered to provide the best fit with experimental data (Streich and Levy, 2007).
+  
+From Figure \@ref(fig:hyp) it it is possible to see the differences between the exponential and the hyperbolic function. Starting from $t=0$, the discount function values decreases with time for both specifications. However, exponential discounting implies discount at a constant rate, while hyperbolic discounting implies discount at a (gradually) decreasing rate. This can be seen observing that the hyperbolic function curve is steeper for the first periods (more impatience) and becomes flatter with time (more patience in the future periods), whereas exponential curve's slope decreases smoothly. Actually, after period 7 the Ainslie and Loewenstein functions show greater values than the exponential function. Read (2007) refers to the point where the utilities curves cross each other as *Indifference point / Preference reversal*.   
+
+```{r hyp, echo=TRUE, error=FALSE, fig.align='center', fig.cap="Hyperolic Discount Functions", message=FALSE, warning=FALSE, out.width='75%'}
+
+h_1 <- function(t){
+  1/t
+}
+
+h_2 <- function(t){
+  1/(1 + 2.3*t)
+}
+
+h_3 <- function(t){
+  1/(1 + 3*t)^(2/3)
+}
+
+exp_2 <- function(t){
+  0.75^t
+}
+
+hyp <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) +
+  
+  scale_x_continuous(name = "Time",
+                     limits = c(0, 10),
+                     breaks = seq(0, 10, 1),
+                     labels = number_format(1)) +
+  scale_y_continuous(name = "Discounted Value",
+                     limits = c(0, 1)) +
+  
+  stat_function(fun = h_1, aes(linetype = "Ainslie")) +
+  stat_function(fun = h_2, aes(linetype = "Mazur")) +
+  stat_function(fun = h_3, aes(linetype = "Loewenstein")) +
+  stat_function(fun = exp_2, aes(color = "Exponential")) +
+
+  scale_linetype_discrete(name = "")+
+  scale_color_discrete(name = "")+
+  theme(legend.position = "bottom")
+
+hyp
+
+```
+
+- Ainslie: $\frac{1}{t}$
+- Mazur: $\frac{1}{(1+ \rho t)}$ with $\rho = 2.3$
+- Loewenstein: $\frac{1}{(1+ \alpha t)^(\frac{\gamma}{\alpha})}$ with $\alpha = 3$ and $\gamma = 2$
+- Exponential: $\delta^t$ with $\delta = 0.75$
+
+The hyperbolic Discount function works to show that the discount rate decreases in the long term, but it also requires a sort of consistency over time: longitudinal consistency. Back to our example, an individual could choose \$100 today (instead of \$110 tomorrow) and \$110 in 31 days (instead of \$100 in 30 days). This is captured by the hyperbolic discounting, because in $t=0$ the individual is more patient after 30 days than today. However, if she changes her mind -if she is asked in 30 days and prefers the \$100 in that moment instead to wait one more day to get \$110-, the hyperbolic discount cannot capture this behavior. In other words, hyperbolic discounting can deal with the *delay effect*, but it does not contemplate cases with *longitudinal* time inconsistency.
+
+Regarding to this point, it is necessary to explain in more detail the *Cross-sectional* time consistency -associated with *Date-Independence*- and *longitudinal* time consistency -associated with *Date-Dependence*-. According to Read (2007), date-independence implies that agents not only make consistent plans, but they will also use the same pattern to state plans in every period. This is called cross-sectional time consistency and it would be the case of the exponential discount function. By contrary, with date-dependence agents are allowed to have different discount rates for different periods, but once they stick to a plan, they will not change it. In this case, even though cross-sectional time consistency is violated, longitudinal time consistency holds. *``As has been discussed previously, cross-sectional, but not longitudinal, inconsistencies can occur if the discount rate depends on calendar time rather than temporal distance to the events in question"* (Read, 2012).
+
+This result could be interpreted as following: hyperbolic function allows that the agent becomes more patient with age. In the \$100 vs \$110 example, the future older agent (thirty days from now) will be more patient than the present younger agent, but the hyperbolic function is still in conflict when the agent is more impatient for short term gains than for long term gains at any period.
+
+Therefore, another function is needed to explain the cases when people make a plan, but then they change it.
+
+# Quasi-Hyperbolic Discount 
+
+Quasi-Hyperbolic Discount Function is useful to deal not only with different discount-rates over time, but also with *preference reversal*. The conceptual distinction with the hyperbolic function is that time period should not be interpreted as a specific date, but as reference to start counting discount factors ^[Note that Rasmusen (2008) considers this feature to all non-exponential functions (which he calls hyperbolic functions). In this work, I followed Cartwright (2011), where time as specific dates is used in exponential and hyperbolic function and time as a delay reference is used in quasi-hyperbolic function.]. In this way, the economic agent is always more impatient for short term gains, since in the following periods the initial discount factors chain starts again and again.
+
+Read (2012) stresses that the two models differ in:
+
+- In the hyperbolic model discount rate decreases with time gradually, while in the quasi-hyperbolic model *"there is a threshold delay which leads to excess discounting, after which there is constant rate discounting thereafter"* (Read, 2012).
+- Hyperbolic discounting implies that the discount rate will be reduced to almost zero in the long run, whereas quasi-hyperbolic discounting assumes a constant discount rate for all delays *"once the initial delay is past, so even a small discount rate can lead even large outcomes to have zero value which entails disregard for the distant future"* (Read, 2012). 
+
+Phelps \& Pollak (1968) proposed the form:
+
+\[
+U = \delta^0 u(c_{0})+ \beta\delta^1 u(c_{1}) + \beta\delta^2 u(c_{2}) + \beta\dots + \beta\delta^\infty u(c_{\infty}) 
+\]
+
+With $0<\beta, \delta <1$
+
+or
+
+\[
+U = u(c_{0})+ \beta \sum_{t=1}^{\infty}\delta^{t} u(c_{t})
+\]
+
+Note that if $\beta=1$, this form is the exponential function. The difference here is that since $0<\beta<1$, utility today is even more valued than utility in the future. In other words, besides the obvious discount function $F(t)=\delta^t$ (which is decreasing in $t$), there is an "additional" discount factor $\beta$, which makes the present utility more valuable. Therefore, $\beta$ reflects the presence of a sort of "myopia".
+ 
+If $\beta$ is close to $0$, then the individual is extremely impatient in the present. $\beta$ can be also interpreted as a measure of *present bias*. Note that the quasi-hyperbolic function contemplates the cases where the agents make a plan and then change it. In the previous example of choosing \$100 today (vs \$110 tomorrow) and \$100 in 30 days (vs \$110 in 31 days), the chain of discount factors faced by the agent will be the same in both cases (today and in 30 days). Therefore, at day 30 the present bias will appear again because the discount factor for the future will be the same than in day 1, so she will choose to get \$100 in that moment instead of wait one more day to get \$110.
+
+Another popular specification for quasi-hyperbolic function is given by Laibson (1997): 
+
+\[ F(t)=\begin{cases} 
+1 & t = 0 \\
+\beta\delta^t & t>0 \\ 
+\end{cases}
+\]
+
+Based on empirical evidence, Laibson (1997) further suggests that $\beta$ should be calibrated in the interval $(0, 2/3 )$ assuming that $\delta$ is close to unit. In Figure \@ref(fig:qh), Laibson quasi-hyperbolic specification simulations are presented with $\beta=0.75$ and $\beta=0.95$ for $\rho=0.95$. Additionally, hyperbolic function and exponential function can be seen to compare the three cases. 
+
+```{r qh, echo=TRUE, error=FALSE, fig.align='center', fig.cap="Quasi-Hyperbolic Discount Functions", message=FALSE, warning=FALSE, out.width='75%'}
+
+qh_1 <- function(t){
+  ifelse(t > 0, 0.5*0.95^t, 1)
+}
+
+qh_2 <- function(t){
+  ifelse(t > 0, 0.75*0.95^t, 1)
+}
+
+qh_3 <- function(t){
+  ifelse(t > 0, 0.95*0.95^t, 1)
+}
+
+h_3 <- function(t){
+  1/(1 + 3*t)^(.75/3)
+}
+
+exp_3 <- function(t){
+  0.95^t
+}
+
+qh <- ggplot(data = data.frame(x = 0), mapping = aes(x = x)) +
+  
+  scale_x_continuous(name = "Time",
+                     limits = c(0, 10),
+                     breaks = seq(0, 10, 1),
+                     labels = number_format(1)) +
+  scale_y_continuous(name = "Discounted Value",
+                     limits = c(0.4, 1)) +
+  
+  stat_function(fun = qh_2, aes(linetype = "Quasi-Hiperbolic 1")) +
+  stat_function(fun = qh_3, aes(linetype = "Quasi-Hiperbolic 2")) +
+  stat_function(fun = h_3, aes(linetype = "Hiperbolic")) +
+  stat_function(fun = exp_3, aes(color = "Exponential")) +
+  
+  scale_linetype_discrete(name = "")+
+  scale_color_discrete(name = "")+
+  theme(legend.position = "bottom")
+
+qh
+```
+
+- Quasi-Hyperbolic 1: $\beta = 0.75$, $\delta = 0.95$
+- Quasi-Hyperbolic 2: $\beta = 0.95$, $\delta = 0.95$
+- Hyperbolic: $\alpha = 3$, $\gamma = 1$
+- Exponential: $\delta = 0.95$
+
+The characteristics commented above are shown in Figure \@ref(fig:qh). The quasi-hyperbolic function shows a discount rate decreasing very fast (steeper slope) at the beginning, but after a threshold it is very similar to the exponential function with constant decreasing rate. On the other hand, the discount rate decreases faster at beginning (not so fast as the quasi-hyperbolic function value) and gradually with time for the hyperbolic function.  	
+
+A briefly resume of the three discount models seen above is presented in Table \@ref(tab:dis).
+
+```{r dis, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Discount Models", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("./tables/qh1.csv") %>%
+  as.data.frame() %>%
+  setNames(c("", "Exponential", "Hyperbolic*", "Qusai-Hyperbolic")) %>%
+
+  kable(caption = "Discount Models")%>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+\* Mazur, 1984
+
+# Lack of Self-Control and how to deal with it 
+
+It has been shown that time inconsistency and decreasing discount rate are anomalies in the exponential function. Therefore, hyperbolic and quasi-hyperbolic functions were introduced and explained to deal with these problems. The question arising now is: What are the implications of these anomalies? What does it mean that people cannot stick to a plan? How they deal with these problems when they have to make decisions? 
+
+In this section, I will focus on one of the most important consequences of the temporal inconsistency: the lack of self-control to make decisions. The fact that people have a lower rate of impatience in the present than in the future, that is to say, that they suffer of present bias, means that they cannot stick to their plans.
+Two of the most used examples to reflect the problem of self-control are those of the smoker and the individual who wants start a diet-regime. Both the smoker and the overweight person suffer from lack of self control when they decide to stop smoking / eat healthy in the future but can never achieve it. In the previous sections I explained the presence of present bias from a formal perspective. Now, I will explain how this affect decision making from the conceptual perspective, using the examples of the smoker and the overweight person. 
+
+For the future, they vow to quit smoke and unhealthy food in exchange for long term rewards (better health) because they use a smaller discount rate for rewards in the future. However, as times go by, the pleasure of smoking a cigarette or eating cake are very high. Therefore, the smoker and the overweight individual decide to smoke a cigarette and eat a cake today, but plan to stop doing so next month. When the next month arrives, the present bias comes back into action, because the option of smoking and eating unhealthy are again very desirable, since the pleasure of doing so now is very high. This problem of self-control produces that the individuals cannot respect their plans and leave unhealthy habits becomes very difficult.
+
+Several authors from Behavioral Economics proposed different mechanism to fix the problem of self control. Different kinds of *Paternalism* were discussed in the last decades. Explain how Paternalism deal with present bias and lack of self control is not part of this paper. However, it is interesting to know that there are other ``self-mechanisms" (often used against Paternalism proposals) to deal with these problems. In the following paragraphs I will briefly describe *internalities and self-bargaining* and *sophistication*. 
+
+## Internalitites and Self Bargaining 
+
+It has been shown that time inconsistency and decreasing discount rate are anomalies in the exponential function. Therefore, hyperbolic and quasi-hyperbolic functions were introduced and explained to deal with these problems. The question arising now is: What are the implications of these anomalies? What does it mean that people cannot stick to a plan? How they deal with these problems when they have to make decisions? 
+
+In this section, I will focus on one of the most important consequences of the temporal inconsistency: the lack of self-control to make decisions. The fact that people have a lower rate of impatience in the present than in the future, that is to say, that they suffer of present bias, means that they cannot stick to their plans.
+Two of the most used examples to reflect the problem of self-control are those of the smoker and the individual who wants start a diet-regime. Both the smoker and the overweight person suffer from lack of self control when they decide to stop smoking / eat healthy in the future but can never achieve it. In the previous sections I explained the presence of present bias from a formal perspective. Now, I will explain how this affect decision making from the conceptual perspective, using the examples of the smoker and the overweight person. 
+
+For the future, they vow to quit smoke and unhealthy food in exchange for long term rewards (better health) because they use a smaller discount rate for rewards in the future. However, as times go by, the pleasure of smoking a cigarette or eating cake are very high. Therefore, the smoker and the overweight individual decide to smoke a cigarette and eat a cake today, but plan to stop doing so next month. When the next month arrives, the present bias comes back into action, because the option of smoking and eating unhealthy are again very desirable, since the pleasure of doing so now is very high. This problem of self-control produces that the individuals cannot respect their plans and leave unhealthy habits becomes very difficult.
+
+Several authors from Behavioral Economics proposed different mechanism to fix the problem of self control. Different kinds of *Paternalism* were discussed in the last decades. Explain how Paternalism deal with present bias and lack of self control is not part of this paper. However, it is interesting to know that there are other ``self-mechanisms" (often used against Paternalism proposals) to deal with these problems. In the following paragraphs I will briefly describe *internalities and self-bargaining* and *sophistication*. 
+
+## Sophistication
+
+In the following paragraphs I will follow the examples of Cartwright (2011) to explain *sophistication*, another internal tool to deal with present bias. Suppose on Friday, Maria must decide when she will do her homework (to be submitted on Monday). If Maria does not have present bias ($\beta = 1$), on Friday the best plan is to do the homework on Saturday, since it has the highest payoff (10.9). On Saturday, doing homework on Saturday is still the best plan, because Maria keep getting the highest payment (in this case 12.1). Something similar happens when Maria has just a little bit of present bias ($\beta = 0.9$). The plan to do homework on Saturday is better on both Friday and Saturday. Therefore Maria does the homework on Saturday and there are no major problems.
+
+However, when Maria has greater present bias ($\beta = 0.8$) the problem becomes more complex. On Friday, Maria plans to do her homework on Saturday because she gets the highest payment (8.7), but on Saturday, the present bias comes into action and higher discount for nearest future makes the payment of doing homework on Monday (9.0) greater than doing it on Saturday (8.7). In this way, a reversion of the preferences is observed.
+
+```{r s1, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Homework: Costs First", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("./tables/soph1.csv") %>%
+  as.data.frame() %>%
+  setNames(c("p", "f1", "s1", "f2", "s2")) %>%
+  mutate(f1 = cell_spec(f1, "html", color = ifelse(f1 == 10.9, "blue", "black")),
+         s1 = cell_spec(s1, "html", color = ifelse(s1 == "12.1", "blue", "black")),
+         f2 = cell_spec(f2, "html", color = ifelse(f2 == 8.7, "blue", "black")),
+         s2 = cell_spec(s2, "html", color = ifelse(s2 == "9", "blue", "black"))) %>%
+  
+  kable(caption = "Homework: Costs First", align = c("l", rep("c", 4)), 
+        col.names = c("Plan", "$\\beta = 1$", "$\\gamma = 0.9$","$\\beta= 0.8$", "$\\gamma = 0.9$"), escape = FALSE)%>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  add_header_above(c("", "On Friday", "On Saturday", "On Friday", "On Saturday"))
+  
+```
+
+This problem can have two outcomes. The first is that Maria is a *naive* person and does not know that she has present bias. This is a case of *procrastination* and Maria will do the homework on Monday, that is, modify her plan and delay the homework until last moment. The second case is when Maria is *sophisticated* and she is aware of her present bias. In this way, Maria knows that if she waits until Saturday, she will do the homework on Monday. Therefore, the real options are doing the homework on Monday with a payment of 7.2 or doing the homework on Friday with a payment of 7.4, which will lead her to do the homework on Friday and procrastination is avoided. Results for this example are presented in Table \@ref(tab:s1).
+
+In the previous example, costs come before benefits, but the opposing order could lead to different outcomes. Suppose now that Maria must choose which day go to the cinema theater as in Table \@ref(tab:s2). With no present bias, she will plan to go on Sunday and she will stick to her plan. In case of present bias ($\beta = 0.8$), on Friday she plans to go on Sunday, since she gets the highest payment (6.5). However, on Saturday she prefers to go on Saturday because she has a higher payment than on Sunday. Again, the outcome will depend on whether Maria is naive or sophisticated. If she is naive, she will end up going to the movies on Saturday. If she is sophisticated, she will go on Friday, that is, she will anticipate her future present bias. In the latter case, we can say that Maria will *preproperate*.
+
+```{r s2, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Movies: Benefits First", message=FALSE, warning=FALSE, out.width='100%'}
+
+read.csv("./tables/soph2.csv") %>%
+  as.data.frame() %>%
+  setNames(c("p", "f1", "s1", "f2", "s2")) %>%
+  mutate(f1 = cell_spec(f1, "html", color = ifelse(f1 == 6.5, "blue", "black")),
+         s1 = cell_spec(s1, "html", color = ifelse(s1 == "7.2", "blue", "black")),
+         f2 = cell_spec(f2, "html", color = ifelse(f2 == 5.2, "blue", "black")),
+         s2 = cell_spec(s2, "html", color = ifelse(s2 == "6", "blue", "black"))) %>%
+
+  kable(caption = "Movies: Benefits First", align = c("l", rep("c", 4)),
+        col.names = c("Plan", "$\\beta = 1$", "$\\gamma = 0.9$","$\\beta= 0.8$", "$\\gamma = 0.9$"), escape = FALSE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  add_header_above(c("", "On Friday", "On Saturday", "On Friday", "On Saturday"))
+```
+
+Finally, there are other mechanisms to deal with present bias, such as *commitment*. In the movies example, a commitment will imply find someway to force the plan. Particularly, if Maria is sophisticated, on Friday she can buy tickets to go to the movies on Sunday.
+
+# Conclusions
+
+This work showed how the exponential discount function was very useful to build economic models due to its mathematical features and its inter-temporal consistency. However, the empirical evidence shows many anomalies that the exponential function cannot explain. 
+
+The hyperbolic and quasi-hyperbolic functions have the advantage that they can deal with problems of decreasing discount rate and inter-temporal inconsistencies, even though they do not contemplate other important anomalies either.
+
+It was also analyzed how the present bias is originated by the hyperbolic / quasi-hyperbolic discount and how it impacts in the decision making process and in the lack of self control. This causes a great difficulty to understand  and interpret inter-temporal preferences, and also reveals that individuals are systematically not consistent when it comes to stick to a plan.
+Finally, sophistication and self-bargaining were analyzed as mechanisms that can solve, at least partially, the problem of consistency and lack of self-control without the need for superior intervention (paternalism).
+
+# Bibliography
+
+- Ainslie, G. (1975). ``Specious Reward: A Behavioral Theory of Impulsiveness and Impulse Control". Psychological Bulletin, 82(4), 463–96.
+
+- Burkett, J.P. (2006). ``Microeconomics : Optimization, Experiments, and Behavior". Oxford University Press
+
+- Cartwright, E. (2011). ``Behavioral economics". Routledge.
+
+- Fredrick, S., Loewenstein, G. and and O’Donoghue, T. (2002). ``Time Discounting and Time Preference: A Critical Review". Journal of Economic Literature, 40(2), 351–401.
+
+- Kirby, K.N. and Herrnstein, R.J. (1995). ``Preference Reversals Due to Myopic Discounting of Delayed Reward". Psychological Science, 6(2), 83-9.
+
+- Laibson, D. (1997). ``Golden eggs and hyperbolic discounting". The Quarterly Journal of Economics, 112(2), 443–77.
+
+- Loewenstein, G. (1988). ``The Weighting of Waiting: Response Mode Effects in Intertemporal Choice". Working Paper, Center for Decision Research, University of Chicago.
+
+- Loewenstein, G. and Sicherman, N. (1991). ``Do Workers Prefer Increasing Wage Profiles?". Journal of Labor Economics, 9(1), 67–84.
+
+- Loewenstein, G. and Prelec, D. (1992). ``Anomalies in Intertemporal Choice: Evidence and an Interpretation", The Quarterly Journal of Economics, 107(2), 573–97.
+
+- Mazur, J.E. (1984). ``Tests of an equivalence rule for fixed and variable delays". Journal of Experimental Psychology: Animal Behavior Processes, 10, 426-36.
+
+- Phelps, E.S. and Pollak, R. (1968): ``On Second-Best National Saving and Game-Equilibrium Growth". The Review of Economic Studies, 35(2), 185–99.
+
+- Rasmusen, E. (2008). ``Some Common Confusions about Hyperbolic Discounting". Available online at http://www.rasmusen.org/special/hyperbolic-rasmusen.pdf 
+
+- Read, D., Frederick S. and Airoldi, M. (2012). ``Four Days Later in Cincinnati: Longitudinal Tests of Hyperbolic Discounting". Acta Psychologica, vol. 140, pp.177-185.
+
+- Read, D. (2007).``Intertemporal Choice". Blackwell Handbook of Judgment and Decision Making (ed. Derek Koehler and Nigel Harvey), pp. 424-433.
+
+- Streich, P. and Levy, J.S. (2007). ``Time Horizons, Discounting, and Intertemporal Choice". Journal of Conflict Resolution, 51(2), 199–226.
+
+- Thaler, R. (1981). ``Some empirical evidence of dynamic inconsistency". Economics Letters, 8, 201-7.
+
+- Whitman, G. (2006). ``Against the New Paternalism: Internalities and the Economics of Self-Control". Cato Policy Analysis, no. 563.
+

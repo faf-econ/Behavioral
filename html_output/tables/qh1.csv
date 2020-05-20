@@ -1,0 +1,7 @@
+Exponential,Hyperbolic*,Quasi-Hyperbolic,
+Discount Function,$F(t)= \delta^t$,"$F(t, \rho)= \frac{1}{1 + \rho t}$",$F(t)=\beta \delta^t$
+Discount Rate,$\rho=\frac{1-\delta}{\delta}$,$\rho=\frac{1-\delta}{\delta t}$,$\rho=\frac{1-\delta}{\delta}$
+Time,Specific Date,Specific date,Reference/Delay
+Cross-Sectional Inconsistency,X,$\surd$,$\surd$
+Longitudinal Inconsistency,X,X,$\surd$
+Delay Effect,X,$\surd$,$\surd$

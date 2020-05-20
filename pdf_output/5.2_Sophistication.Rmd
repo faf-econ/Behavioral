@@ -4,7 +4,7 @@ However, when Maria has greater present bias ($\beta = 0.8$) the problem becomes
 
 ```{r s1, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Homework: Costs First", message=FALSE, warning=FALSE, out.width='100%'}
 
-read.csv("/home/faf/Dropbox/Git_Projects/Behavioral/soph1.csv") %>%
+read.csv("./tables/soph1.csv") %>%
   as.data.frame() %>%
   setNames(c("p", "f1", "s1", "f2", "s2")) %>%
   mutate(f1 = cell_spec(f1, "latex", color = ifelse(f1 == 10.9, "blue", "black")),
@@ -23,7 +23,7 @@ In the previous example, costs come before benefits, but the opposing order coul
 
 ```{r s2, echo=FALSE, error=FALSE, fig.align='center', fig.cap="Movies: Benefits First", message=FALSE, warning=FALSE, out.width='100%'}
 
-read.csv("/home/faf/Dropbox/Git_Projects/Behavioral/soph2.csv") %>%
+read.csv("./tables/soph2.csv") %>%
   as.data.frame() %>%
   setNames(c("p", "f1", "s1", "f2", "s2")) %>%
   mutate(f1 = cell_spec(f1, "latex", color = ifelse(f1 == 6.5, "blue", "black")),
