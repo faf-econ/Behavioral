@@ -15,3 +15,9 @@ solved by self mechanisms.
 
 Repository contains documentation to create the pdf and the html version
 of the paper and the actual outputs.
+
+HTML version:
+https://faf-econ.github.io/Behavioral/html_output/Behavioral_v_html.html
+
+PDF version:
+https://faf-econ.github.io/Behavioral/pdf_output/Behavioral_v_pdf.pdf
